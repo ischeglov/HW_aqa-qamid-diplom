@@ -128,4 +128,114 @@ public class DebitCardTest {
                         step("Проверка отсутствия видимости уведомления об успехе", paymentPage::shouldOkNotificationInvisibile)
         );
     }
+
+    @DisplayName("Неуспешная оплата без указания номера дебетовой карты")
+    @Test
+    public void UnsuccessfulPaymentWithoutCard() {
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo("", month, year, cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("Номер карты Неверный формат");
+                        })
+        );
+    }
+
+    @DisplayName("Неуспешная оплата без указания месяца дебетовой карты")
+    @Test
+    public void UnsuccessfulPaymentWithoutMonth() {
+        var cardNumber = DataHelper.getRandomCardNumber();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, "", year, cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("Месяц Неверный формат");
+                        })
+        );
+    }
+
+    @DisplayName("Неуспешная оплата без указания года дебетовой карты")
+    @Test
+    public void UnsuccessfulPaymentWithoutYear() {
+        var cardNumber = DataHelper.getRandomCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, "", cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("Год Неверный формат");
+                        })
+        );
+    }
+
+    @DisplayName("Неуспешная оплата без указания CVV/CVC дебетовой карты")
+    @Test
+    public void UnsuccessfulPaymentWithoutCode() {
+        var cardNumber = DataHelper.getRandomCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, cardOwner, "");
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("CVC/CVV Неверный формат");
+                        })
+        );
+    }
+
+    @Test
+    public void UnsuccessfulPaymentWith15DigitCardNumber() {
+        var cardNumber = DataHelper.getInvalidCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("Номер карты Неверный формат");
+                        })
+        );
+    }
 }
