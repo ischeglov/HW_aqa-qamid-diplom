@@ -9,8 +9,7 @@ import pages.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DebitCardTest {
 
@@ -31,6 +30,7 @@ public class DebitCardTest {
         paymentPage.openDebitPayPage();
     }
 
+    @DisplayName("Успешная покупка с валидными данными дебетовой карты со статусом APPROVED")
     @Test
     public void SuccessfulPurchaseWithValidCard() {
         var cardNumber = DataHelper.approvedCardNumber();
@@ -41,16 +41,15 @@ public class DebitCardTest {
         var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, cardOwner, cardCode);
         var paymentPage = new PaymentPage();
 
-
         step("Производим оплату", () -> {
             paymentPage.paymentByCard(cardInfo);
             paymentPage.waitingNotification();
         });
 
-         var expectedStatus = "APPROVED";
-         var actualStatus = SQLHelper.getInfoFromDebitPayment().getStatus();
-         var transactionID = SQLHelper.getInfoFromDebitPayment().getTransaction_id();
-         var paymentID = SQLHelper.getInfoFromOrder().getPayment_id();
+        var expectedStatus = "APPROVED";
+        var actualStatus = SQLHelper.getInfoFromDebitPayment().getStatus();
+        var transactionID = SQLHelper.getInfoFromDebitPayment().getTransaction_id();
+        var paymentID = SQLHelper.getInfoFromOrder().getPayment_id();
 
         assertAll(
                 () ->
@@ -65,5 +64,42 @@ public class DebitCardTest {
                         step("Проверка платежа в таблице заказов в БД", () -> {
                             assertEquals(transactionID, paymentID);
                         }));
+    }
+
+    @DisplayName("Отклонение оплаты с дебетовой карты со статусом DECLINED")
+    @Test
+    public void PaymentRejectionWithCardDeclined() {
+        var cardNumber = DataHelper.declinedCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+            paymentPage.waitingNotification();
+        });
+
+        var expectedStatus = "DECLINED";
+        var actualStatus = SQLHelper.getInfoFromDebitPayment().getStatus();
+        var transactionID = SQLHelper.getInfoFromDebitPayment().getTransaction_id();
+        var paymentID = SQLHelper.getInfoFromOrder().getPayment_id();
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.shouldNotificationText("Банк отказал в проведении операции.");
+                        }),
+                () ->
+                        step("Проверка статуса платежа в БД", () -> {
+                            assertEquals(expectedStatus, actualStatus);
+                        }),
+                () ->
+                        step("Проверка отсутствия платежа со статусом Declined в таблице заказов", () -> {
+                            assertNotEquals(transactionID, paymentID);
+                        })
+        );
     }
 }
