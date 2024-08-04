@@ -44,6 +44,7 @@ public class DebitCardTest {
 
         step("Производим оплату", () -> {
             paymentPage.paymentByCard(cardInfo);
+            paymentPage.waitingNotification();
         });
 
          var expectedStatus = "APPROVED";

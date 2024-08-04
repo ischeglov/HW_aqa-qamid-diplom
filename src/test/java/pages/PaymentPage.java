@@ -20,18 +20,23 @@ public class PaymentPage {
     private final SelenideElement cardOwner = $("form > fieldset > div:nth-child(3) > .input-group > span:nth-child(1) .input input");
     private final SelenideElement cardCode = $("form > fieldset > div:nth-child(3) > .input-group > span:nth-child(2) .input input");
     private final SelenideElement buttonSubmit = $("form > fieldset > div:nth-child(4) button");
-    private final SelenideElement notification = $("div > div.notification.notification_visible.notification_status_ok.notification_has-closer.notification_stick-to_right.notification_theme_alfa-on-white > div.notification__content");
+    private final SelenideElement notificationChecking = $(".notification");
+    private final SelenideElement notification = $(".notification_visible .notification__content");
 
     public void openDebitPayPage() {
         buyDebitCardButton.click();
         headingDebitPay.shouldBe(visible);
     }
 
-    public void shouldNotificationText(String expectedText) {
-        notification.shouldBe(exactText(expectedText)).shouldBe(visible, Duration.ofSeconds(30));
+    public void waitingNotification() {
+        notificationChecking.shouldHave(visible, Duration.ofSeconds(15));
     }
 
-    public void paymentByCard(DataHelper.CardInfo cardInfo) {
+    public void shouldNotificationText(String expectedText) {
+        notification.shouldHave(exactText(expectedText)).shouldBe(visible, Duration.ofSeconds(15));
+    }
+
+    public void paymentByCard(DataHelper.CardInfo cardInfo) throws InterruptedException {
         cardNumder.setValue(cardInfo.getNumber());
         month.setValue(cardInfo.getMonth());
         year.setValue(cardInfo.getYear());
