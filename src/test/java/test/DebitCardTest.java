@@ -217,6 +217,54 @@ public class DebitCardTest {
         );
     }
 
+    @DisplayName("Неуспешная оплата без указания владельца дебетовой карты")
+    @Test
+    public void UnsuccessfulPaymentWithoutOwner() {
+        var cardNumber = DataHelper.approvedCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getInvalidCardOwnerNameSpecSimbol();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+            paymentPage.waitingNotification();
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("Владелец Неверный формат");
+                        }),
+                () ->
+                        step("Проверка отсутствия видимости уведомления об успехе", paymentPage::shouldOkNotificationInvisibile)
+        );
+    }
+
+    @DisplayName("Неуспешная оплата с невалидным значением в поле владельц дебетовой карты")
+    @Test
+    public void UnsuccessfulPaymentWithoutInvalidOwner() {
+        var cardNumber = DataHelper.getRandomCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, "", cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.checkInputInvalid("Владелец Поле обязательно для заполнения");
+                        })
+        );
+    }
+
     @Test
     public void UnsuccessfulPaymentWith15DigitCardNumber() {
         var cardNumber = DataHelper.getInvalidCardNumber();

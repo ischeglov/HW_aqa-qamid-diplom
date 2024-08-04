@@ -5,6 +5,7 @@ import lombok.Value;
 
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Random;
 
 public class DataHelper {
 
@@ -55,6 +56,14 @@ public class DataHelper {
         var firstName = FAKER.name().firstName();
         var lastName = FAKER.name().lastName();
         return firstName + " " + lastName;
+    }
+
+    public static String getInvalidCardOwnerNameNumber() {
+            return "13454677";
+    }
+
+    public static String getInvalidCardOwnerNameSpecSimbol() {
+        return "#$&^%#&%#&";
     }
 
     public static String getRandomCardCode() {
