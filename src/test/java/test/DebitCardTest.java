@@ -54,7 +54,7 @@ public class DebitCardTest {
         assertAll(
                 () ->
                         step("Проверка уведомления об оплате", () -> {
-                            paymentPage.shouldNotificationText("Операция одобрена Банком.");
+                            paymentPage.shouldNotificationSuccessfulText("Операция одобрена Банком.");
                         }),
                 () ->
                         step("Проверка статуса платежа в БД", () -> {
@@ -90,7 +90,7 @@ public class DebitCardTest {
         assertAll(
                 () ->
                         step("Проверка уведомления об ошибке", () -> {
-                            paymentPage.shouldNotificationText("Банк отказал в проведении операции.");
+                            paymentPage.shouldNotificationSuccessfulText("Ошибка! Банк отказал в проведении операции.");
                         }),
                 () ->
                         step("Проверка статуса платежа в БД", () -> {
@@ -100,6 +100,32 @@ public class DebitCardTest {
                         step("Проверка отсутствия платежа со статусом Declined в таблице заказов", () -> {
                             assertNotEquals(transactionID, paymentID);
                         })
+        );
+    }
+
+    @Test
+    @DisplayName("Отклонение оплаты с недействительным номером дебетовой карты")
+    void PaymentRejectionWithInvalidCard() {
+        var cardNumber = DataHelper.getRandomCardNumber();
+        var month = DataHelper.getValidMonthAndYear().getCardMonth();
+        var year = DataHelper.getValidMonthAndYear().getCardYear();
+        var cardOwner = DataHelper.getValidCardOwnerName();
+        var cardCode = DataHelper.getRandomCardCode();
+        var cardInfo = new DataHelper.CardInfo(cardNumber, month, year, cardOwner, cardCode);
+        var paymentPage = new PaymentPage();
+
+        step("Производим оплату", () -> {
+            paymentPage.paymentByCard(cardInfo);
+            paymentPage.waitingNotification();
+        });
+
+        assertAll(
+                () ->
+                        step("Проверка уведомления об ошибке", () -> {
+                            paymentPage.shouldNotificationUnsuccessfulText("Ошибка! Банк отказал в проведении операции.");
+                        }),
+                () ->
+                        step("Проверка отсутствия видимости уведомления об успехе", paymentPage::shouldOkNotificationInvisibile)
         );
     }
 }
