@@ -22,7 +22,6 @@ public class PaymentPage {
     private SelenideElement notificationChecking = $(".notification");
     private SelenideElement notificationOkContent = $(".notification_status_ok .notification__content");
     private SelenideElement notificationStatusOk = $(".notification_status_ok");
-    private SelenideElement notificationStatusError = $(".notification_status_error");
     private SelenideElement notificationErrorContent = $(".notification_status_error .notification__content");
     private SelenideElement inputInvalid = $(".input_invalid");
 
@@ -47,19 +46,11 @@ public class PaymentPage {
         notificationStatusOk.shouldNotBe(visible).should(disappear, Duration.ofSeconds(15));
     }
 
-    public void shouldErrorNotificationVisible() {
-        notificationStatusError.shouldBe(visible, Duration.ofSeconds(15));
-    }
-
-    public void shouldErrorNotificationInvisible() {
-        notificationStatusError.shouldNotBe(visible).should(disappear, Duration.ofSeconds(15));
-    }
-
     public void checkInputInvalid(String expectedText) {
         inputInvalid.shouldHave(exactText(expectedText)).shouldBe(visible, Duration.ofSeconds(5));
     }
 
-    public void paymentByCard(DataHelper.CardInfo cardInfo) throws InterruptedException {
+    public void paymentByCard(DataHelper.CardInfo cardInfo) {
         cardNumder.setValue(cardInfo.getNumber());
         month.setValue(cardInfo.getMonth());
         year.setValue(cardInfo.getYear());
