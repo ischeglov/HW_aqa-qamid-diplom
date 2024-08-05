@@ -198,7 +198,7 @@ public class DebitCardTest {
     @DisplayName("Неуспешная оплата без указания CVV/CVC дебетовой карты")
     @Test
     public void UnsuccessfulPaymentWithoutCode() {
-        var cardNumber = DataHelper.getRandomCardNumber();
+        var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
         var cardOwner = DataHelper.getValidCardOwnerName();
@@ -239,7 +239,7 @@ public class DebitCardTest {
         );
     }
 
-    @DisplayName("Неуспешная оплата с невалидным значением в поле владельц дебетовой карты")
+    @DisplayName("Неуспешная оплата с невалидным значением в поле владелец дебетовой карты")
     @Test
     public void UnsuccessfulPaymentWithoutInvalidOwner() {
         var cardNumber = DataHelper.approvedCardNumber();
@@ -265,6 +265,7 @@ public class DebitCardTest {
         );
     }
 
+    @DisplayName("Неуспешная попытка оплаты с 15-значным номером дебетовой карты")
     @Test
     public void UnsuccessfulPaymentWith15DigitCardNumber() {
         var cardNumber = DataHelper.getInvalidCardNumber();
