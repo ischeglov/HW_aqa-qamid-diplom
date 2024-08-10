@@ -51,6 +51,20 @@ public class DataHelper {
         return new CardMonthAndYear(randomMonth, randomYear);
     }
 
+    public static CardMonthAndYear getInvalidMonthAndYear() {
+        var currentDate = LocalDate.now();
+        var randomMonth = String.format("%02d", FAKER.number().numberBetween(1, 12));
+        var randomYear = String.format("%04d", Faker.instance().number().numberBetween(currentDate.getYear() + 6, currentDate.getYear() + 50)).substring(2);
+        return new CardMonthAndYear(randomMonth, randomYear);
+    }
+
+    public static CardMonthAndYear getCurrentMonthAndYear() {
+        var currentDate = LocalDate.now();
+        var formattedMonth = String.format("%02d", LocalDate.now().getMonthValue());
+        var formattedYear = String.format("%04d", LocalDate.now().getYear()).substring(2);
+        return new CardMonthAndYear(formattedMonth, formattedYear);
+    }
+
     public static String getValidCardOwnerName() {
         var firstName = FAKER.name().firstName();
         var lastName = FAKER.name().lastName();
@@ -65,11 +79,23 @@ public class DataHelper {
         return "#$&^%#&%#&";
     }
 
+    public static String getInvalidCardOwnerNameOneSimbol() {
+        return "A";
+    }
+
+    public static String getInvalidCardOwnerNameCyrillic() {
+        return "Иван Щеглов";
+    }
+
     public static String getRandomCardCode() {
         return FAKER.numerify("###");
     }
 
     public static String getInvalidCardCode() {
         return FAKER.numerify("##");
+    }
+
+    public static String getInvalidCardCodeLetters() {
+        return "aqa";
     }
 }
