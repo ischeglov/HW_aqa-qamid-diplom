@@ -32,7 +32,7 @@ public class DebitCardTest {
 
     @DisplayName("Успешная покупка с валидными данными дебетовой карты со статусом APPROVED")
     @Test
-    public void SuccessfulPurchaseWithValidCard() {
+    public void successfulPurchaseWithValidCard() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -68,7 +68,7 @@ public class DebitCardTest {
 
     @DisplayName("Отклонение оплаты с дебетовой карты со статусом DECLINED")
     @Test
-    public void PaymentRejectionWithCardDeclined() {
+    public void paymentRejectionWithCardDeclined() {
         var cardNumber = DataHelper.declinedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -105,7 +105,7 @@ public class DebitCardTest {
 
     @Test
     @DisplayName("Отклонение оплаты с недействительным номером дебетовой карты")
-    void PaymentRejectionWithInvalidCard() {
+    void paymentRejectionWithInvalidCard() {
         var cardNumber = DataHelper.getRandomCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -131,7 +131,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата без указания номера дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWithoutCard() {
+    public void unsuccessfulPaymentWithoutCard() {
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
         var cardOwner = DataHelper.getValidCardOwnerName();
@@ -153,7 +153,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата без указания месяца дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWithoutMonth() {
+    public void unsuccessfulPaymentWithoutMonth() {
         var cardNumber = DataHelper.getRandomCardNumber();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
         var cardOwner = DataHelper.getValidCardOwnerName();
@@ -175,7 +175,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата без указания года дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWithoutYear() {
+    public void unsuccessfulPaymentWithoutYear() {
         var cardNumber = DataHelper.getRandomCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var cardOwner = DataHelper.getValidCardOwnerName();
@@ -197,7 +197,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата без указания CVV/CVC дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWithoutCode() {
+    public void unsuccessfulPaymentWithoutCode() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -219,7 +219,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата без указания владельца дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWithoutOwner() {
+    public void unsuccessfulPaymentWithoutOwner() {
         var cardNumber = DataHelper.getRandomCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -241,7 +241,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата с невалидным значением в поле владелец дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWithoutInvalidOwner() {
+    public void unsuccessfulPaymentWithoutInvalidOwner() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -267,7 +267,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная попытка оплаты с 15-значным номером дебетовой карты")
     @Test
-    public void UnsuccessfulPaymentWith15DigitCardNumber() {
+    public void unsuccessfulPaymentWith15DigitCardNumber() {
         var cardNumber = DataHelper.getInvalidCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -290,7 +290,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата с невалидным значением в поле владелец дебетовой карты (цифры)")
     @Test
-    public void UnsuccessfulPaymentWithoutInvalidOwnerNumbers() {
+    public void unsuccessfulPaymentWithoutInvalidOwnerNumbers() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -316,7 +316,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата с невалидным значением в поле владелец дебетовой карты (одна буква)")
     @Test
-    public void UnsuccessfulPaymentWithoutInvalidOwnerOneSimbol() {
+    public void unsuccessfulPaymentWithoutInvalidOwnerOneSimbol() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -342,7 +342,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата с невалидным значением в поле владелец дебетовой карты (кириллица)")
     @Test
-    public void UnsuccessfulPaymentWithoutInvalidOwnerCyrillic() {
+    public void unsuccessfulPaymentWithoutInvalidOwnerCyrillic() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -368,7 +368,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата c невалидным значением CVV/CVC дебетовой карты (2 цифры)")
     @Test
-    public void UnsuccessfulPaymentWithoutCodeTwoDigits() {
+    public void unsuccessfulPaymentWithoutCodeTwoDigits() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -391,7 +391,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата c невалидным значением CVV/CVC дебетовой карты (буквы)")
     @Test
-    public void UnsuccessfulPaymentWithoutCodeLetters() {
+    public void unsuccessfulPaymentWithoutCodeLetters() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -414,7 +414,7 @@ public class DebitCardTest {
 
     @DisplayName("Успешная покупка с валидными данными дебетовой карты со статусом APPROVED (текущий месяц и год)")
     @Test
-    public void SuccessfulPurchaseWithValidCardCurrentMonthAndYear() {
+    public void successfulPurchaseWithValidCardCurrentMonthAndYear() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getCurrentMonthAndYear().getCardMonth();
         var year = DataHelper.getCurrentMonthAndYear().getCardYear();
@@ -450,7 +450,7 @@ public class DebitCardTest {
 
     @DisplayName("Неуспешная оплата c невалидным значением года дебетовой карты (более 5 лет текущего года)")
     @Test
-    public void UnsuccessfulPaymentWithoutYearMoreFiveYears() {
+    public void unsuccessfulPaymentWithoutYearMoreFiveYears() {
         var cardNumber = DataHelper.getRandomCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getInvalidMonthAndYear().getCardYear();

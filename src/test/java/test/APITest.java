@@ -21,7 +21,7 @@ public class APITest {
 
     @DisplayName("Успешная покупка с валидными данными дебетовой карты со статусом APPROVED")
     @Test
-    public void SuccessfulPurchaseWithValidCardAPI() {
+    public void successfulPurchaseWithValidCardAPI() {
         var cardNumber = DataHelper.approvedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
@@ -38,7 +38,7 @@ public class APITest {
 
     @DisplayName("Отклонение оплаты с дебетовой карты со статусом DECLINED")
     @Test
-    public void PaymentRejectionWithCardDeclinedAPI() {
+    public void paymentRejectionWithCardDeclinedAPI() {
         var cardNumber = DataHelper.declinedCardNumber();
         var month = DataHelper.getValidMonthAndYear().getCardMonth();
         var year = DataHelper.getValidMonthAndYear().getCardYear();
